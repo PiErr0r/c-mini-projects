@@ -107,6 +107,91 @@ void graham_scan(Points* points, Points* hull) {
     }
 }
 
+int Area2(Vector2 a, Vector2 b, Vector2 c) {
+    return (b.x-a.x)*(c.y-a.y) -
+           (b.y-a.y)*(c.x-a.x);
+}
+// return true if c is on left of segment ab
+bool is_left(Vector2 a, Vector2 b, Vector2 c) {
+    return Area2(a, b, c) < 0.f;
+}
+
+float distance(Vector2 a, Vector2 b, Vector2 c) {
+    float A = c.x - a.x;
+    float B = c.y - a.y;
+    float C = b.x - a.x;
+    float D = b.y - a.y;
+
+    float dot = A * C + B * D;
+    float len_sq = C*C + D*D;
+
+    float dx = c.x - a.x + C * dot / len_sq;
+    float dy = c.y - a.y + D * dot / len_sq;
+
+    return dx*dx + dy*dy;
+}
+
+void _quickhull(Vector2 a, Vector2 b, Points *S, Points *hull) {
+    if (S->count == 0) {
+        return;
+    }
+    float max_d = -1;
+    Vector2 c = {0};
+    da_foreach(S, Vector2, pt) {
+        float d = distance(a, b, *pt);
+        if (d > max_d) {
+            max_d = d;
+            c = *pt;
+        }
+    }
+    da_append(hull, c);
+    Points A = {0};
+    Points B = {0};
+    da_foreach(S, Vector2, pt) {
+        if (is_left(a, c, *pt)) {
+            da_append(&A, *pt);
+        }
+        if (is_left(c, b, *pt)) {
+            da_append(&B, *pt);
+        }
+    }
+    _quickhull(a, c, &A, hull);
+    _quickhull(c, b, &B, hull);
+}
+
+void quickhull(Points* points, Points* hull) {
+    Vector2 tl = {W + 1, H + 1};
+    Vector2 br = {-1, -1};
+
+    da_foreach(points, Vector2, pt) {
+        if (pt->y < tl.y) {
+            tl = *pt;
+        } else if (fabs(pt->y - tl.y) < EPSILON && pt->x < tl.x) {
+            tl = *pt;
+        }
+        if (pt->y > br.y) {
+            br = *pt;
+        } else if (fabs(pt->y - br.y) < EPSILON && pt->x > br.x) {
+            br = *pt;
+        }
+    }
+
+    Points A = {0};
+    Points B = {0};
+    da_foreach(points, Vector2, pt) {
+        if (is_left(br, tl, *pt)) {
+            da_append(&A, *pt);
+        } else {
+            da_append(&B, *pt);
+        }
+    }
+
+    da_append(hull, br);
+    _quickhull(br, tl, &A, hull);
+    da_append(hull, tl);
+    _quickhull(tl, br, &B, hull);
+}
+
 
 int main(void)
 {
@@ -122,16 +207,10 @@ int main(void)
         da_append(&points, v);
     }
 
-    // ss_quick_sort(points.items, points.count);
-    // printf("SORTED\n");
-    //
-    // da_foreach(&points, Vector2, v) {
-    //     print_Vector2(*v);
-    // }
-
     Points hull = {0};
     // jarvis_march(&points, &hull);
-    graham_scan(&points, &hull);
+    // graham_scan(&points, &hull);
+    quickhull(&points, &hull);
 
     Vector2 vw0 = { 0, 0 };
     Vector2 v1 = { 2, 1 };
@@ -149,14 +228,14 @@ int main(void)
         da_foreach(&points, Vector2, v) {
             DrawRing(*v, R - 2, R, 0, 360, NUM_RING_SEGMENTS, C_IDLE);
         }
-        DrawCircleV(points.items[0], R, RED);
-        for (size_t i = 1; i <= 4; ++i) {
-            DrawCircleV(points.items[i], R, C_NEXT);
-        }
+        // DrawCircleV(points.items[0], R, RED);
+        // for (size_t i = 1; i <= 4; ++i) {
+        //     DrawCircleV(points.items[i], R, C_NEXT);
+        // }
 
         Vector2* prev = &hull.items[hull.count - 1];
         da_foreach(&hull, Vector2, v) {
-            DrawLineV(*prev, *v, C_CURR);
+            // DrawLineV(*prev, *v, C_CURR);
             DrawCircleV(*v, R, C_CURR);
             prev = v;
         }

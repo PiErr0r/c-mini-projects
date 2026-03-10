@@ -8,7 +8,7 @@
 - [ ] convex hull (3D?) animation (multiple algorithms) [link](https://en.wikipedia.org/wiki/Convex_hull_algorithms#Algorithms)
     - [x] Jarvis march
     - [x] Graham scan
-    - [ ] quickhull
+    - [x] quickhull
     - [ ] mergehull
     - [ ] Kirkpatrick–Seidel
     - [ ] Akl-Toussant heuristic
