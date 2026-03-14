@@ -1,4 +1,4 @@
-#include <stdio.h>
+#define FEATHER_IMPLEMENTATION
 #include "feathersql.h"
 
 int main(int argc, const char **argv) {
@@ -9,6 +9,5 @@ int main(int argc, const char **argv) {
     } else {
         feather_usage();
     }
-    printf("Hello, world!\n");
     return 0;
 }
