@@ -55,7 +55,7 @@
 - [x] O'Reilly - Practical C Programming
 - [ ] Beej's Guide to Network Programming by Brian "Beej Jorgensen" Hall
 - [ ] -||- c
-- [ ] -||- gdb
+- [x] -||- gdb
 - [ ] -||- UNIX IPC
 - [ ] Low-Level Programming C, Assembly, and Program Execution on Intel® 64 Architecture by Igor Zhirkov
 - [ ] (reference) Programski jezik C - Predavanja, Jurak M.
