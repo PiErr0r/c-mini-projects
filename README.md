@@ -1,4 +1,4 @@
-# C/C++ and maybe C#
+# C - mini projects
 
 ## TODO
 - [x] 2D n-body simulation
@@ -30,11 +30,14 @@
     - https://graphics.stanford.edu/courses/cs448a-10/
     - https://stanford.edu/class/ee367/
     - https://graphics.stanford.edu/courses/ba-colloquium/
-- [ ] maze generation and path-finding (dynamic stuff in maze so we can try D-star)
+- [x] maze generation
+    - [ ] path-finding (dynamic stuff in maze so we can try D-star)
 - [ ] motion planning
     - [link](https://en.wikipedia.org/wiki/Motion_planning)
+    - [ ] robot arm simulation, inverse kinematics
 - [ ] random noise (perlin?)
 - [ ] web server (websocket, http...)
+- [ ] multiplayer game
 - [ ] png/jpg decoder and viewer
     - computer vision and digital image processing
 - [ ] Voronoy, delaunay triangulation
@@ -61,11 +64,6 @@
 - [ ] -||- UNIX IPC
 - [ ] Low-Level Programming C, Assembly, and Program Execution on Intel® 64 Architecture by Igor Zhirkov
 - [ ] (reference) Programski jezik C - Predavanja, Jurak M.
-
-#### C++
-- [x] Programming: Principles and Practice Using C++, 2nd Ed. by Bjarne Stroustrup
-- [ ] C++ Primer by Stanley B. Lippman, Josée Lajoie, Barbara E. Moo
-- [ ] (reference) The C++ Programming Language, 4th Edition by Bjarne Stroustrup
 
 https://stackoverflow.com/a/388282
 

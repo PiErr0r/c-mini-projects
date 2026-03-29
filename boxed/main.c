@@ -122,6 +122,8 @@ void register_movement(Vector3 *ego_p, Quaternion *ego_r) {
     double yaw = 0;
     double pitch = 0;
     double roll = 0;
+    // since z axis is camera front, y axis look to the sky and x axis looks to the left
+    // multiplications are on the right of ego_r because we rotate in the local crs
     if (IsKeyDown(KEY_LEFT)) {
         pitch -= DTHETA * 0.5f;
     }

@@ -227,7 +227,7 @@ void draw_graph(void)
     }
 }
 
-void step(void)
+void bfs(void)
 {
     static int n = 1;
     static int prev[NC*NR][2] = {{0, 0}};
@@ -262,6 +262,11 @@ void step(void)
     }
     memcpy(prev, next, 2 * m * sizeof(int));
     n = m;
+}
+
+void step(void)
+{
+    bfs();
 }
 
 int main(void)
