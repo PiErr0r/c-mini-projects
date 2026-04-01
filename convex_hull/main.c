@@ -5,7 +5,7 @@
 #define DT 1e-3
 
 #define R 10
-#define NUM_POINTS 20
+#define NUM_POINTS 50
 #define NUM_RING_SEGMENTS 8
 
 #define C_IDLE WHITE
@@ -116,19 +116,13 @@ bool is_left(Vector2 a, Vector2 b, Vector2 c) {
     return Area2(a, b, c) < 0.f;
 }
 
-float distance(Vector2 a, Vector2 b, Vector2 c) {
-    float A = c.x - a.x;
-    float B = c.y - a.y;
-    float C = b.x - a.x;
-    float D = b.y - a.y;
-
-    float dot = A * C + B * D;
-    float len_sq = C*C + D*D;
-
-    float dx = c.x - a.x + C * dot / len_sq;
-    float dy = c.y - a.y + D * dot / len_sq;
-
-    return dx*dx + dy*dy;
+float distance(Vector2 a, Vector2 b, Vector2 c)
+{
+    Vector2 va = Vector2Subtract(a, c);
+    Vector2 vb = Vector2Subtract(a, b);
+    float C = Vector2Length(va);
+    float B = Vector2DotProduct(va, vb) / Vector2Length(vb);
+    return C*C - B*B;
 }
 
 void _quickhull(Vector2 a, Vector2 b, Points *S, Points *hull) {
@@ -144,10 +138,12 @@ void _quickhull(Vector2 a, Vector2 b, Points *S, Points *hull) {
             c = *pt;
         }
     }
-    da_append(hull, c);
     Points A = {0};
     Points B = {0};
     da_foreach(S, Vector2, pt) {
+        if (Vector2Equals(*pt, c)) {
+            continue;
+        }
         if (is_left(a, c, *pt)) {
             da_append(&A, *pt);
         }
@@ -156,6 +152,8 @@ void _quickhull(Vector2 a, Vector2 b, Points *S, Points *hull) {
         }
     }
     _quickhull(a, c, &A, hull);
+    da_append(hull, c);
+    // inserted here to preserve order for display
     _quickhull(c, b, &B, hull);
 }
 
@@ -179,6 +177,9 @@ void quickhull(Points* points, Points* hull) {
     Points A = {0};
     Points B = {0};
     da_foreach(points, Vector2, pt) {
+        if (Vector2Equals(*pt, br) || Vector2Equals(*pt, tl)) {
+            continue;
+        }
         if (is_left(br, tl, *pt)) {
             da_append(&A, *pt);
         } else {
@@ -235,7 +236,7 @@ int main(void)
 
         Vector2* prev = &hull.items[hull.count - 1];
         da_foreach(&hull, Vector2, v) {
-            // DrawLineV(*prev, *v, C_CURR);
+            DrawLineV(*prev, *v, C_CURR);
             DrawCircleV(*v, R, C_CURR);
             prev = v;
         }
