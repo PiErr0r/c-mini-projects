@@ -44,7 +44,7 @@
 - [ ] Triangulated irregular network
 - [ ] Sierpinski triangles, mandelbrot set
 - [ ] raymarching or other ray algos
-- [ ] rotating donut
+- [x] rotating donut
 - [ ] parser, lexer +
 - [ ] simplex algorithm
 - [ ] ideas: https://franciscouzo.github.io/
