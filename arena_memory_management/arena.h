@@ -98,12 +98,20 @@ void arena_free(Arena *arena)
     arena->end = NULL;
 }
 
-Arena da_arena = {0};
+static Arena da_arena = {0};
+#ifndef DA_ARENA
+#define DA_ARENA da_arena
+#endif
+
+void free_da_arena(void)
+{
+    arena_free(&da_arena);
+}
 
 #define da_realloc(da, new_capacity)\
     do { \
         (da)->items = arena_realloc(\
-            &da_arena, \
+            &DA_ARENA, \
             (da)->items, \
             (da)->capacity * sizeof(*(da)->items), \
             (new_capacity) * sizeof(*(da)->items)); \
